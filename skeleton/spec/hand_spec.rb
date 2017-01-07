@@ -16,14 +16,18 @@ describe Hand do
         Card.new(:hearts, :three),
       ]
       discard_pile = double("discard_pile")
-      expect(discard_pile).to receive(:matching_suit).and_return(true)
-
       deck = double("deck")
+
       expect(deck).to receive(:take).with(8).and_return(deck_cards)
 
       hand = Hand.new(deck, discard_pile)
 
       expect(hand.cards).to match_array(deck_cards)
+
+
+      allow(discard_pile).to receive(:matching_suit).and_return(true)
+        hand.make_move(hand.cards[0])
+      allow(discard_pile).to receive(:matching_suit).and_return(true)
     end
   end
 

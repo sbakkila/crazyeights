@@ -3,31 +3,42 @@ require 'hand'
 require 'deck'
 
 describe Hand do
+  let(:discard_pile) { double("discard_pile") }
+  let(:deck) { double("deck") }
+  subject(:hand) { Hand.new(deck, discard_pile) }
+
+  let(:deck_cards) do [
+    Card.new(:spades, :deuce),
+    Card.new(:clubs, :five),
+    Card.new(:diamonds, :jack),
+    Card.new(:hearts, :queen),
+    Card.new(:spades, :four),
+    Card.new(:clubs, :nine),
+    Card.new(:diamonds, :deuce),
+    Card.new(:hearts, :three),
+  ]
+  end
+
   describe "#deal_from" do
+    before (:each) do
+
+
+      allow(deck).to receive(:take).with(8).and_return(deck_cards)
+    end
+
     it "deals a hand of eight cards" do
-      deck_cards = [
-        Card.new(:spades, :deuce),
-        Card.new(:clubs, :five),
-        Card.new(:diamonds, :jack),
-        Card.new(:hearts, :queen),
-        Card.new(:spades, :four),
-        Card.new(:clubs, :nine),
-        Card.new(:diamonds, :deuce),
-        Card.new(:hearts, :three),
-      ]
-      discard_pile = double("discard_pile")
-      deck = double("deck")
+      expect(hand.cards).to match_array(deck_cards)
+    end
 
-      expect(deck).to receive(:take).with(8).and_return(deck_cards)
+    it "makes valid moves and puts cards in the discard pile" do
 
-      hand = Hand.new(deck, discard_pile)
+      allow(discard_pile).to receive(:matching_suit).and_return(true)
+      allow(discard_pile).to receive(:matching_value).and_return(false)
+      allow(discard_pile).to receive(:<<).and_return([hand.cards[0]])
+        hand.make_move(hand.cards[0])
 
       expect(hand.cards).to match_array(deck_cards)
 
-
-      allow(discard_pile).to receive(:matching_suit).and_return(true)
-        hand.make_move(hand.cards[0])
-      allow(discard_pile).to receive(:matching_suit).and_return(true)
     end
   end
 

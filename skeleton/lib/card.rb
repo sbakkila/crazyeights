@@ -62,7 +62,7 @@ class Card
   # Compares two cards to see if they're equal in suit || value.
   # not order agnostic, you can put an 8 down on any card
   # but you cannot put any card down on an 8
-  def ==(other_card)
+  def match(other_card)
     return false if other_card.nil?
     # debugger
 

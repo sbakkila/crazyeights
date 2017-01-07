@@ -15,7 +15,7 @@ class Hand
   # This is a *factory method* that creates and returns a `Hand`
   # object.
   def deal_from(deck)
-    @cards = deck.take(8)
+    deck.take(8)
   end
 
   attr_accessor :cards
@@ -23,7 +23,7 @@ class Hand
   def initialize(deck, discard_pile)
     @deck = deck
     @discard_pile = discard_pile
-    deal_from(deck)
+    @cards = deal_from(deck)
   end
 
   def is_valid_move?(card)
@@ -38,9 +38,16 @@ class Hand
     false
   end
 
-  def make_move(*cards)
-    cards.each do |card|
-      @discardpile << card if is_valid_move?(card)
+  def make_move(*cards_moving)
+    # debugger
+    cards_moving.each do |card|
+
+      if is_valid_move?(card)
+        # debugger
+        @discard_pile << card
+        self.cards.delete(card)
+
+      end
     end
   end
 
